@@ -1,0 +1,21 @@
+{
+  "train_batch_size": 48,
+  "train_micro_batch_size_per_gpu": 6,
+  "steps_per_print": 10000,
+  "gradient_accumulation_steps": 1,
+  "optimizer": {
+    "type": "OnebitAdam",
+    "params": {
+      "lr": 3e-5,
+      "freeze_step": 10000,
+      "weight_decay": 0.0,
+      "bias_correction": false,
+      "cuda_aware": false,
+      "comm_backend_name": "nccl"
+    }
+  },
+  "gradient_clipping": 1.0,
+  "fp16": {
+    "enabled": true
+  }
+}
