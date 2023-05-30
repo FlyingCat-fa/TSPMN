@@ -1,0 +1,54 @@
+{
+  // "required"
+  // "output_dir": "model_files/entity_parallel_MSL_mlm", // The output directory where the model predictions and checkpoints will be written, [entity_and_mask, only_entity, only_mask]
+  "output_dir": "model_files/entity_parallel_MSL_entity_and_mask_2023_46", // The output directory where the model predictions and checkpoints will be written, [entity_and_mask, only_entity, only_mask]
+  //"output_dir": "model_files/MIE2mrc_v4_Parallel"
+  // "other"
+  "debug": false,
+  "pretrained": true,
+  "split_num": 2,
+  "do_train": true, // Whether to run training
+  "do_eval": true, // Whether to run eval on the dev set
+  "do_infer": false, // Whether to run eval on the dev set
+  "evaluate_during_training": true, // Rul evaluation during training at each logging step
+  "do_lower_case": true, // Set this flag if you are using an uncased model
+  // 分隔
+  "batch_size": 32, // Batch size per GPU/CPU for training
+  "batch_size_eval": 64, // Batch size per GPU/CPU for evaluation
+  "per_gpu_infer_batch_size": 16,
+  "gradient_accumulation_steps": 1, // Number of updates steps to accumulate before performing a backward/update pass
+  "learning_rate": 1e-5, // The initial learning rate for Adam
+  "weight_decay": 0.01, // Weight deay if we apply some
+  "adam_epsilon": 1e-8, // Epsilon for Adam optimizer
+  "adam_beta_1": 0.9, // Beta 1 for Adam optimizer
+  "adam_beta_2": 0.999, // Beta 2 for Adam optimizer
+  "max_grad_norm": 1.0, // Max gradient norm
+  "num_train_epochs": 100.0, // Total number of training epochs to perform
+  "max_steps": -1, // If > 0: set total number of training steps to perform. Override num_train_epochs
+  "warmup_steps": 100, // Linear warmup over warmup_steps
+  // 分隔
+  "logging_steps": 1, // Log every X updates steps
+  "save_steps": 50, // Save checkpoint every X updates steps
+  "eval_all_checkpoints": true, // Evaluate all checkpoints starting with the same prefix as model_name ending and ending with step number
+  "no_cuda": false, // Avoid using CUDA when available
+  "overwrite_output_dir": true, // Overwrite the content of the output directory
+  "seed": 45, // random seed for initialization
+  "fp16": true, // Whether to use 16-bit (mixed) precision (through NVIDIA apex) instead of 32-bit
+  "fp16_opt_level": "O1", // For fp16: Apex AMP optimization level selected in ['O0', 'O1', 'O2', and 'O3']
+  // "local_rank": -1, // For distributed training: local_rank
+  // "ModelArguments"
+  "model_type": "bert", // Model type selected in the list of MODEL_CLASSES
+  "model_name_or_path": "/home/pretrained_model/bert-base-chinese", // Path to pre-trained model or shortcut name selected in the list of ALL_MODELS
+  "config_name": "", // Pretrained config name or path if not the same as model_name
+  "tokenizer_name": "", // Pretrained tokenizer name or path if not the same as model_name
+  "cache_dir": "", // Where do you want to store the pre-trained models downloaded from s3
+  // "DataTrainingArguments"
+  "data_dir": "/home/Medical_Understanding/MSL/data_processed/MSL",
+
+  // "logdir": "log/tb_path/entity_parallel_MSL_entity_and_mask_2023_epoch5",
+  "logdir": "log/tb_path/entity_parallel_MSL_entity_and_mask_2023_46",
+  "task_name": "MSL", // The name of the task to train selected in the list of processors
+  "max_seq_length": 512, // The maximum total input sequence length after tokenization. Sequences longer than this will be truncated, sequences shorter will be padded
+  "overwrite_cache": false, // Overwrite the cached training and evaluation sets
+  "vocab_path": "/home/pretrained_model/bert-base-chinese/vocab.txt"
+}
