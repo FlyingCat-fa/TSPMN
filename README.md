@@ -31,10 +31,10 @@ sh pretraining_deepspeed/run_train.sh
 
 cd data_processed, python data_process_MSL.py
 
-3. training
+2. training
 
 nohup CUDA_VISIBLE_DEVICES=2 python -m torch.distributed.launch --master_port 19600 --nproc_per_node=1 train_Parallel.py > run.log 2>&1 &
 
-4. evaluating
+3. evaluating
 
 python evaluate.py
