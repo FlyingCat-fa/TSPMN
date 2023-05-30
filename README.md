@@ -25,7 +25,7 @@ sh pretraining_deepspeed/run_train.sh
 ```
 ### finetuning
 
-Download the MSL Dataset. 
+Download the MSL Dataset. Then:
 ```
 cd data_processed, python data_process_MSL.py
 ```
