@@ -14,9 +14,9 @@ python make_data_VRBot.py
 3. Constructing the Dict
 
 Download the  sougoupinyin medical dictionary and the medical dictionary THUOCL. 
-
+```
 python dict.py
-
+```
 4. Constructing the data for pretraining
 
 cd data/data_for_pretrain, python medical_word_extract.py
