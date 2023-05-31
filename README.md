@@ -11,7 +11,7 @@ python make_data_MedDialog.py
 python make_data_ReMeDi.py 
 python make_data_VRBot.py 
 ```
-Constructing the Dict. Download the sougoupinyin medical dictionary and the medical dictionary THUOCL. 
+Constructing the Dict. Download the sougoupinyin medical dictionary and the medical dictionary THUOCL. Then:
 ```
 python dict.py
 ```
