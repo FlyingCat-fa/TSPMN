@@ -3,7 +3,7 @@ Matching-based Term Semantics Pre-training for Spoken Patient Query Understandin
 
 ### pretraining
 
-Download the MedDialog, kamed and ReMeDi Dataset. 
+Download the [MedDialog]: (https://drive.google.com/drive/folders/11sglwm6-cY7gjeqlZaMxL_MDKDMLdhym), kamed and ReMeDi Dataset. 
 
 Preprocessing for pretraining:
 ```
