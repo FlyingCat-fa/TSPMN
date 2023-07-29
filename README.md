@@ -4,6 +4,11 @@ Matching-based Term Semantics Pre-training for Spoken Patient Query Understandin
 ### pretraining
 
 Download the [MedDialog](https://drive.google.com/drive/folders/11sglwm6-cY7gjeqlZaMxL_MDKDMLdhym), [kamed](https://drive.google.com/drive/folders/1i-qiwVgOHS9Cs_7YSNdUCWwviP2HOgqI) and [ReMeDi-large](https://drive.google.com/drive/folders/1nxVEci21eU5KSejiWM4fwRlRELvkncpe) datasets and save them to data4pretrain  Folder. 
+```
+cd data4pretrain/VRBot-sigir2021-datasets
+unzip 'kamed-*.zip'
+cd ..
+```
 
 Preprocessing for pretraining:
 ```
