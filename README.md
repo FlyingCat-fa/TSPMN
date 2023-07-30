@@ -16,7 +16,7 @@ python make_data_MedDialog.py
 python make_data_ReMeDi.py 
 python make_data_VRBot.py 
 ```
-Constructing the Dict. Download the [sougou medical dictionary](https://pinyin.sogou.com/dict/detail/index/15125) and the medical dictionary [THUOCL](https://github.com/thunlp/THUOCL). Then:
+Constructing the Dict. Download the [sougou medical dictionary](https://pinyin.sogou.com/dict/detail/index/15125) and the dictionary [THUOCL in medical domain](https://github.com/thunlp/THUOCL). Then:
 ```
 python dict.py
 ```
