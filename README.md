@@ -10,19 +10,17 @@ unzip 'kamed-*.zip'
 cd ..
 ```
 
-Preprocessing for pretraining:
+processing medical dialogues:
 ```
-python make_data_MedDialog.py 
-python make_data_ReMeDi.py 
-python make_data_VRBot.py 
+python preprocess4pretrain.py 
 ```
 Constructing the Dict. Download the [sougou medical dictionary](https://pinyin.sogou.com/dict/detail/index/15125) and the dictionary [THUOCL](https://github.com/thunlp/THUOCL) in medical domain. Then:
 ```
-python dict.py
+python medical_dict/dict.py
 ```
-Constructing the data for pretraining.
+Constructing the dialogue-term pairs for pretraining.
 ```
-cd data/data_for_pretrain, python medical_word_extract.py
+cd data4pretrain, python medical_word_extract.py
 ```
 Pretraining:
 ```
