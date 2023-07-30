@@ -1,7 +1,14 @@
 # TSPMN
 Matching-based Term Semantics Pre-training for Spoken Patient Query Understanding, ICASSP 2023.
 
-### pretraining
+## Requirement
+
+* pytorch 1.10.0
+* transformers 4.18.0
+* deepspeed 0.6.3
+* apex 0.1
+
+### Pretraining
 
 Download the [MedDialog](https://drive.google.com/drive/folders/11sglwm6-cY7gjeqlZaMxL_MDKDMLdhym), [kamed](https://drive.google.com/drive/folders/1i-qiwVgOHS9Cs_7YSNdUCWwviP2HOgqI) and [ReMeDi-large](https://drive.google.com/drive/folders/1nxVEci21eU5KSejiWM4fwRlRELvkncpe) datasets and save them to data4pretrain  Folder. 
 ```
@@ -10,7 +17,7 @@ unzip 'kamed-*.zip'
 cd ..
 ```
 
-processing medical dialogues:
+Processing medical dialogues:
 ```
 python preprocess4pretrain.py 
 ```
@@ -26,11 +33,11 @@ Pretraining:
 ```
 sh pretraining_deepspeed/run_train.sh
 ```
-### finetuning
+### Finetuning
 
-Download the MSL Dataset. Then:
+Download the [MSL](https://github.com/xmshi-trio/MSL) Dataset. Then:
 ```
-cd data_processed, python data_process_MSL.py
+python data_process_MSL.py
 ```
 Training:
 ```
