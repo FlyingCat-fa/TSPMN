@@ -4,8 +4,8 @@ import os
 
 from sys import path
 path.append(os.getcwd())
-root_path = '/home/Medical_Understanding'
-path.append(root_path)
+# root_path = '/home/Medical_Understanding'
+# path.append(root_path)
 import random
 import json
 import argparse
@@ -27,7 +27,6 @@ from tensorboardX import SummaryWriter
 from tqdm import tqdm, trange
 
 from common_utils import Config, mkdir, read_json, write_json
-# from Entity_parallel.evaluate import evaluate
 from evaluate import evaluate
 
 
@@ -126,7 +125,6 @@ class EntDataset(Dataset):
     ):
         doctor_id, patient_id, ent_id, mask_id, cls_id, sep_id = self.special_id
         utterances = example["utterances"]
-        # label = example["label"]
 
         hypothesis_ids = []
         for entity in entities:
@@ -164,8 +162,6 @@ class EntDataset(Dataset):
         for j, idx in enumerate(input_ids):
             if idx == ent_id:
                 cur_choice_idx.append(j)
-                # if len(cur_choice_idx) > 20:
-                #     print('  ')
         entity_id = []
         label = []
         for entity in entities:
@@ -174,15 +170,6 @@ class EntDataset(Dataset):
                 label.append(0)
             else:
                 label.append(1)
-        # tokenized_example = {
-        #         "example_id": example_id,
-        #         "entity_id": entity_id,
-        #         "label": label,
-        #         "token_id": input_ids,
-        #         "type_id": token_type_ids,
-        #         "attention_mask": attention_mask,
-        #         "cur_choice_idx": cur_choice_idx
-        #     }
         feature = (
                 example_id,
                 entity_id,
@@ -374,14 +361,11 @@ def train(args, model, tokenizer, train_dataset, eval_dataset=None):
 
 
 def main():
-    root_path = '/home/Medical_Understanding'
-    args_from_json = Config(config_file=os.path.join(root_path, 'config_MSL.json'))
+    args_from_json = Config(config_file='config_MSL.json')
     parser = argparse.ArgumentParser()
     parser.add_argument("--local_rank", type=int, default=-1,
                         help="For distributed training: local_rank")
     args = parser.parse_args()
-    parser.add_argument("--entity_label_num", type=int, default=2)
-    # parser.add_argument("--state_label_num", type=int, default=3)
     args = parser.parse_args()
     for key ,value in vars(args).items():
         args_from_json.add(key, value)
@@ -422,7 +406,6 @@ def main():
 
     # 初始化tokenizer
     tokenizer = BertTokenizer(vocab_file=args.vocab_path, sep_token="[SEP]", pad_token="[PAD]", cls_token="[CLS]")
-    # special_tokens = ['<eos_u>', '<eos_r>', '<eos_b>', '<eos_a>', '<sos_u>', '<sos_r>', '<sos_b>', '<sos_a>', '<eos_ent>']
     special_tokens = ['<doctor>', '<patient>', '<ent>']
     vocab_size = len(tokenizer) + len(special_tokens)
     # Padding for divisibility by 8
@@ -473,22 +456,7 @@ def main():
     
     model.resize_token_embeddings(len(tokenizer))
     if args.pretrained:
-        # epoch = 5
-        # epoch = 9
-        # epoch = 19
-        # epoch = 4
-        # model_path='/home/Medical_Understanding/MSL/model_files/pretraining/pretrain_deepspeed/checkpoint-{}.pth'
-        # model_path = model_path.format(epoch)
-        # model_path = '/home/Medical_Understanding/model_files/pretrain_deepspeed_entity_and_mask/checkpoint-4.pth' # v0
-        # model_path = '/home/Medical_Understanding/model_files/pretrain_deepspeed_entity_and_mask_old/checkpoint-4.pth' # old v1
-        # model_path = '/home/Medical_Understanding/model_files/pretrain_deepspeed_entity_and_mask_old_2/checkpoint-4.pth' # old 2 v2
-        model_path = '/home/Medical_Understanding/model_files/pretrain_deepspeed_entity_and_mask_2023/checkpoint-4.pth' # 2023
-        # model_path = '/home/Medical_Understanding/model_files/pretrain_MSL/checkpoint-19.pth'
-        # model_path = '/home/Medical_Understanding/model_files/pretrain_deepspeed_only_entity/checkpoint-4.pth'
-        # model_path = '/home/Medical_Understanding/model_files/pretrain_deepspeed_only_mask/checkpoint-9.pth'
-        # model.load_state_dict(torch.load(model_path, map_location=args.device))
-        # model_path = '/home/Medical_Understanding/model_files/pretrain_deepspeed_only_mask_mlm/checkpoint-4.pth'
-        # model_path = '/home/SPIDER/data/medical_data/medical_ngram/pytorch_model_epoch_4.bin'
+        model_path = 'model_files/pretrain/checkpoint-4.pth' # please change the path
         model = load_model_state(state_path=model_path, model=model, device=device)
     if args.local_rank == 0:
         torch.distributed.barrier()  # Make sure only the first process in distributed training will download model & vocab

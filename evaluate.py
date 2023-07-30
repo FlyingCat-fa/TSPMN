@@ -3,31 +3,22 @@ import os
 # os.environ["CUDA_VISIBLE_DEVICES"]='3'
 from sys import path
 path.append(os.getcwd())
-root_path = '/home/Medical_Understanding'
-path.append(root_path)
+# path.append('/home/Medical_Understanding/MSL')
 from tqdm import tqdm
 import argparse
 import logging
 import random
-import json
 import argparse
 import torch
 import logging
 import os
-from torch.utils.data import Dataset, DataLoader, RandomSampler, SequentialSampler
-from os.path import join, exists
-from tqdm import tqdm
-import pickle
-import sys
-from transformers import (BertConfig, WEIGHTS_NAME, CONFIG_NAME, 
-                            AdamW, BertTokenizer, get_linear_schedule_with_warmup)
+from torch.utils.data import Dataset, DataLoader, SequentialSampler
+from transformers import BertTokenizer
 
 from modeling.modeling_bert import BertForMultiEntPrediction
 from datetime import datetime
-
 import numpy as np
 import random
-
 import torch.nn.utils.rnn as rnn_utils
 from evaluate_MSL.classification_evaluate import \
     ClassificationEvaluator as cEvaluator
@@ -100,7 +91,6 @@ class EntDataset(Dataset):
         printable=True,
     ):
         self.tokenizer = tokenizer
-        # self.doctor_id, self.patient_id, self.ent_id, self.mask_id, self.cls_id, self.sep_id = special_id
         self.special_id = special_id
 
         label_map_path = os.path.join(data_dir, 'label_map.json')
@@ -159,8 +149,6 @@ class EntDataset(Dataset):
         for j, idx in enumerate(input_ids):
             if idx == ent_id:
                 cur_choice_idx.append(j)
-                # if len(cur_choice_idx) > 20:
-                #     print('  ')
         entity_id = []
         label = []
         for entity in entities:
@@ -169,15 +157,6 @@ class EntDataset(Dataset):
                 label.append(0)
             else:
                 label.append(1)
-        # tokenized_example = {
-        #         "example_id": example_id,
-        #         "entity_id": entity_id,
-        #         "label": label,
-        #         "token_id": input_ids,
-        #         "type_id": token_type_ids,
-        #         "attention_mask": attention_mask,
-        #         "cur_choice_idx": cur_choice_idx
-        #     }
         feature = (
                 example_id,
                 entity_id,
@@ -215,11 +194,7 @@ class EntDataset(Dataset):
 
 
 def infer(args, model, eval_dataset, logger):
-    # Loop to handle MNLI double evaluation (matched, mis-matched)
     eval_output_dir = args.output_dir
-
-    results = {}
-
     if not os.path.exists(eval_output_dir) and args.local_rank in [-1, 0]:
         os.makedirs(eval_output_dir)
     # Note that DistributedSampler samples randomly
@@ -237,9 +212,6 @@ def infer(args, model, eval_dataset, logger):
     out_entity_ids = None
     for step, batch in enumerate(epoch_iterator):
         model.eval()
-        # if args.debug:
-        #     if step > 5:
-        #         break
         batch = tuple(t.to(args.device) for t in batch)
 
         with torch.no_grad():
@@ -262,9 +234,6 @@ def infer(args, model, eval_dataset, logger):
 
 
 def evaluate(args, model, entity_eval_dataset, logger):
-    # entity infer
-    # entity_eval_dataset = load_eval_dataset()
-    predict_probs = []
     predicts = []
     standard_labels = []
     entity_preds, out_label_ids, out_example_ids, out_entity_ids = infer(args, model, eval_dataset=entity_eval_dataset, logger=logger)
@@ -324,17 +293,13 @@ def evaluate(args, model, entity_eval_dataset, logger):
 
 def main():
     start = datetime.now()
-    root_path = '/home/Medical_Understanding'
-    args_from_json = Config(config_file=os.path.join(root_path, 'config_MSL.json'))
+    args_from_json = Config(config_file='config_MSL.json')
     parser = argparse.ArgumentParser()
     parser.add_argument("--local_rank", type=int, default=-1,
                         help="For distributed training: local_rank")
-    parser.add_argument("--entity_label_num", type=int, default=2)
-    # parser.add_argument("--state_label_num", type=int, default=3)
     args = parser.parse_args()
     for key ,value in vars(args).items():
         args_from_json.add(key, value)
-    # args_from_json.add('local_rank', args.local_rank)
     args = args_from_json
     if args.pretrained:
         args.output_dir += '_pretrained'
@@ -350,7 +315,6 @@ def main():
 
     # 初始化tokenizer
     tokenizer = BertTokenizer(vocab_file=args.vocab_path, sep_token="[SEP]", pad_token="[PAD]", cls_token="[CLS]")
-    # special_tokens = ['<eos_u>', '<eos_r>', '<eos_b>', '<eos_a>', '<sos_u>', '<sos_r>', '<sos_b>', '<sos_a>', '<eos_ent>']
     special_tokens = ['<doctor>', '<patient>', '<ent>']
     vocab_size = len(tokenizer) + len(special_tokens)
     # Padding for divisibility by 8
@@ -374,11 +338,10 @@ def main():
     else:
         printable = False
 
-    # model = BertForMTLSequenceClassification.from_pretrained(args.model_name_or_path)
     model = BertForMultiEntPrediction.from_pretrained(args.model_name_or_path)
     model.resize_token_embeddings(len(tokenizer))
-    epoch = 15
-    model_path = os.path.join(root_path, args.output_dir, 'checkpoint-{}.pth'.format(epoch))
+    epoch = 2
+    model_path = os.path.join(args.output_dir, 'checkpoint-{}.pth'.format(epoch))
     model.load_state_dict(torch.load(model_path, map_location=device))
     model.to(args.device)
     
