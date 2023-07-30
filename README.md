@@ -35,6 +35,7 @@ Pretraining:
 ```
 sh pretraining_deepspeed/run_train.sh
 ```
+The pretrained checkpoint can be found in [百度云盘](https://pan.baidu.com/s/19AvShXSH5FRPbFnACqty6A), 提取码：b820.
 ### Finetuning
 
 Download the [MSL](https://github.com/xmshi-trio/MSL) Dataset. Then:
