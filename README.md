@@ -7,7 +7,7 @@ Matching-based Term Semantics Pre-training for Spoken Patient Query Understandin
 * transformers 4.18.0
 * deepspeed 0.6.3
 * apex 0.1
-* 
+  
 ## Usage
 
 ### Pretraining
