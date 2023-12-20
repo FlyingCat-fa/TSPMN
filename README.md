@@ -50,6 +50,6 @@ Evaluating:
 ```
 python evaluate.py
 ```
-### Pseudo-labeled data
+### Pseudo-labeled data (术语伪标注医疗对话语料库)
 We have released the processed dataset of dialogue-term pairs obtained through pseudo-labeling via string matching. The processed dataset can be found in [百度云盘](https://pan.baidu.com/s/1L0Q59J6J01K1kpIxOSsACg), 提取码：wueo.
 It is important to note that the original data comes from publicly available datasets. We have conducted the pseudo-labeling of medical terms based on these public datasets. These pseudo-labeled terms are not limited to term extraction tasks, but can also facilitate research on related downstream tasks, such as medical dialogue generation with term knowledge enhancement, medical dialogue recommendation, and so on.
